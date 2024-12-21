@@ -1,0 +1,100 @@
+/* General Styles */
+.slider-wrapper {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 20px;
+    padding: 10px;
+    justify-content: flex-end; /* This will push the content to the right */
+}
+
+/* Categories Section */
+.categories {
+    flex: none; /* Prevents resizing */
+    margin-right: 10px;
+    padding-left: 20px; /* Add spacing to the left of the text */
+    padding-right: 20px; /* Add spacing to the right of the text */
+}
+
+.categories ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.categories li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.categories li:hover {
+    color: #3498db;
+}
+
+/* Vertical Divider (Line after text) */
+.vertical-divider {
+    width: 2px;
+    height: 100%; /* Matches the height of the categories */
+    background-color: #000;
+    margin-left: 15px; /* Spacing before the line */
+    margin-right: 15px; /* Spacing after the line */
+}
+
+/* Slider Container */
+.slider-container {
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Align items on the left and right */
+    padding: 10px;
+    border-radius: 20px;
+    min-height: 250px; /* Adjust this value to increase the height */
+    min-width: 1000px; /* Adjust this value if needed */
+    margin-left: auto; /* Aligns the container to the right */
+    position: relative;
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align to the left */
+    margin-left: 150px; /* Add some space from the left edge */
+}
+
+.search-bar input {
+    width: 300px; /* Adjusted width to align with the new layout */
+    padding: 5px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+}
+
+.search-bar button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #2980b9;
+}
+
+/* Slider Image Section */
+.slider-image {
+    position: absolute;
+    right: 10px; /* Align the image to the right */
+    top: 50%; /* Position image vertically centered */
+    transform: translateY(-50%); /* Center image vertically */
+}
+
+.slider-image img {
+    width: 250px;
+    height: 250px;
+    border-radius: 4px;
+    margin-right: 30px;
+}

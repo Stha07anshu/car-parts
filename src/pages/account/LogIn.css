@@ -1,0 +1,44 @@
+/* Full page background image for the Login Page */
+.login-page {
+  background-color: #f8f9fa; /* Light background for the entire page */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px; /* Add some padding to avoid edges being too close */
+}
+
+/* Form container styling */
+.off-white-container {
+  background-color: rgba(255, 255, 255, 0.85); /* Slight transparency to allow background image */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+h3 {
+  font-family: 'Playfair Display', serif;
+}
+
+.form-control {
+  border-radius: 5px;
+}
+
+button {
+  border-radius: 5px;
+}
+
+.text-danger {
+  font-size: 0.9rem;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,119 @@
+/* General Styles */
+.category-slider {
+    padding: 30px; /* Increased padding for a larger appearance */
+    background-color: #fff;
+    text-align: center;
+}
+
+/* Title Section with Blue Bookmark */
+.category-header {
+    display: flex;
+    align-items: center; /* Aligns bookmark and text vertically */
+    justify-content: flex-start; /* Aligns the items to the left */
+    margin-bottom: 12px; /* Increased margin for better spacing */
+    gap: 20px; /* Adds consistent spacing between items */
+}
+
+.small-blue-bookmark {
+    width: 20px; /* Square size */
+    height: 20px;
+    background-color: #3498db;
+}
+
+.category-header h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px; /* Increased spacing below the header */
+}
+
+h2 {
+    font-size: 26px; /* Slightly larger font for emphasis */
+    font-weight: bold;
+}
+
+/* Slider Section */
+.slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.arrow-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 22px; /* Slightly larger for visibility */
+    color: #3498db;
+    margin: 0 15px; /* Increased spacing */
+}
+
+.arrow-btn:hover {
+    color: #2980b9;
+}
+
+.category-cards {
+    display: flex;
+    gap: 24px; /* Increased gap between cards */
+    overflow: hidden; /* Hide scrollbars and extra content */
+    scroll-behavior: smooth;
+    max-width: 90%; /* Increased max-width for more space */
+    margin: 0 auto; /* Centered the cards container */
+}
+
+.category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 140px; /* Increased width */
+    height: 140px; /* Increased height */
+    border: 1px solid #ccc;
+    border-radius: 10px; /* Slightly larger border radius */
+    transition: transform 0.3s, background-color 0.3s, color 0.3s;
+    cursor: pointer;
+}
+
+.category-card i {
+    font-size: 35px; /* Slightly larger icon */
+    margin-bottom: 12px; /* Added spacing below icon */
+}
+
+.category-card p {
+    font-size: 16px; /* Larger font for text */
+    font-weight: bold;
+    margin: 0;
+}
+
+.category-card:hover {
+    transform: scale(1.1);
+    background-color: #f4f4f4;
+}
+
+.category-card.active {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.category-card.active i {
+    color: #fff;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .category-cards {
+        gap: 15px;
+    }
+
+    .category-card {
+        width: 120px; /* Adjusted for smaller screens */
+        height: 120px;
+    }
+}

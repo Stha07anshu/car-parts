@@ -1,0 +1,100 @@
+/* General styling for the Featured section */
+.featured-section {
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  width: 100%;
+}
+
+.featured-label {
+  font-size: 25px;
+  color: #050505;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.coming-soon {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: left;
+  color:#333;
+}
+
+/* Grid layout */
+.featured-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: repeat(2, auto);
+  gap: 20px;
+  grid-template-areas: 
+    "large-item small-item1 small-item1"
+    "small-item4 small-item2 small-item3"; /* Added small-item4 */
+}
+
+.featured-item {
+  position: relative;
+  background-color: #0c0c0c;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.featured-item:hover {
+  transform: scale(1.02);
+}
+
+.featured-item.large {
+  grid-area: large-item;
+}
+
+.featured-item.small1 {
+  grid-area: small-item1;
+}
+
+.featured-item.small2 {
+  grid-area: small-item2;
+}
+
+.featured-item.small3 {
+  grid-area: small-item3;
+}
+
+.featured-item.small4 {
+  grid-area: small-item4; /* New grid area */
+}
+
+/* Image styling */
+.featured-image {
+  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Text content */
+.featured-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+}
+
+.featured-text h2 {
+  font-size: 16px;
+  color: #fff;
+  margin: 0 0 5px;
+  text-align: left;
+}
+
+.featured-text p {
+  font-size: 12px;
+  color: #ccc;
+  margin: 0;
+  text-align: left;
+}

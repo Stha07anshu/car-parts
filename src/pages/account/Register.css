@@ -1,0 +1,49 @@
+.signup-page {
+    background-color: #f8f9fa; /* Light background for the entire page */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px; /* Add some padding to avoid edges being too close */
+  }
+  
+  form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px; /* Limit the maximum width of the form */
+    width: 100%; /* Ensure it doesn't exceed 100% width */
+  }
+  
+  form .form-control {
+    border-radius: 5px;
+    margin-bottom: 15px; /* Add space between form controls */
+  }
+  
+  form button {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem; /* Adjust font size for the button */
+    width: 100%; /* Ensure button spans the full width of the form */
+  }
+  
+  h3 {
+    font-size: 1.5rem; /* Slightly smaller heading */
+    margin-bottom: 20px; /* Add space below the heading */
+  }
+  
+  p {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .text-center a {
+    color: #007bff; /* Use a primary blue color for the link */
+    text-decoration: none;
+  }
+  
+  .text-center a:hover {
+    text-decoration: underline; /* Add hover effect on the link */
+  }
+  
