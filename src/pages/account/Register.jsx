@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { registerUserApi } from '../../api/Api'; // Import your API utility
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Register.css';
 
@@ -10,14 +11,9 @@ const Register = () => {
     confirmPassword: '',
   });
 
-  const [errors, setErrors] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -45,16 +41,30 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate the form before submitting
     if (validateForm()) {
-      setFormSubmitted(true);
-      alert('Form submitted successfully');
-      // You can proceed with form submission here
-    } else {
-      setFormSubmitted(false);
+      try {
+        // Call the register API
+        const response = await registerUserApi(formData);
+
+        if (response.data.success) {
+          setSuccessMessage('User registered successfully!');
+          setErrorMessage('');
+          setFormData({
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+          });
+        }
+      } catch (error) {
+        const errorMsg = error.response?.data?.message || 'Something went wrong!';
+        setErrorMessage(errorMsg);
+        setSuccessMessage('');
+      }
     }
   };
 
@@ -64,7 +74,7 @@ const Register = () => {
         <div className="row w-100">
           <div className="col-md-6 d-none d-md-block">
             <img
-              src="https://i.pinimg.com/736x/d3/42/dd/d342dd4f3ac0c2a88d4be645b0c5f1ca.jpg" // Replace with the image URL or import locally
+              src="https://i.pinimg.com/736x/d3/42/dd/d342dd4f3ac0c2a88d4be645b0c5f1ca.jpg"
               alt="Sign Up Illustration"
               className="img-fluid"
             />
@@ -72,6 +82,8 @@ const Register = () => {
           <div className="col-md-6">
             <div className="off-white-container">
               <h3 className="text-center mb-4">Create an account</h3>
+              {successMessage && <div className="alert alert-success">{successMessage}</div>}
+              {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="name" className="form-label">Name</label>

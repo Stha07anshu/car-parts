@@ -4,6 +4,8 @@ import "./Homepage.css"; // Import CSS for homepage styling
 import Category from "../ui/Category";
 import Ads from "../ui/Ads"; // Import the Ads component
 import Featured from "../ui/Featured"; // Import the Featured component
+import Services from "../ui/Service";
+import ProductCard from "../ui/ProductCard";
 
 const Homepage = () => {
   return (
@@ -22,6 +24,10 @@ const Homepage = () => {
 
       <section className="homepage-featured">
         <Featured /> {/* Displaying Featured component */}
+      </section>
+      <ProductCard />
+      <section className="service-featured">
+        <Services /> {/* Displaying Featured component */}
       </section>
     </div>
   );
