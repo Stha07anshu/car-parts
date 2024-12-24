@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { loginUserApi } from '../../api/Api'; // Import your API utility
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './LogIn.css'; // You can modify or create the CSS as needed
+import './LogIn.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,12 +9,9 @@ const Login = () => {
     password: '',
   });
 
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-  });
-
+  const [errors, setErrors] = useState({});
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -36,16 +34,27 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate the form before submitting
     if (validateForm()) {
-      setFormSubmitted(true);
-      alert('Login successful');
-      // You can proceed with login logic here
-    } else {
-      setFormSubmitted(false);
+      try {
+        // Call the login API
+        const response = await loginUserApi(formData);
+
+        if (response.data.success) {
+          setFormSubmitted(true);
+          setErrorMessage('');
+          alert('Login successful');
+          // Store token and redirect to the dashboard or desired page
+          localStorage.setItem('token', response.data.token);
+          window.location.href = '/'; 
+        }
+      } catch (error) {
+        const errorMsg = error.response?.data?.message || 'Login failed! Please try again.';
+        setErrorMessage(errorMsg);
+        setFormSubmitted(false);
+      }
     }
   };
 
@@ -63,6 +72,7 @@ const Login = () => {
           <div className="col-md-6">
             <div className="off-white-container">
               <h3 className="text-center mb-4">Login</h3>
+              {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">Email</label>

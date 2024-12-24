@@ -1,11 +1,27 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { FaUser, FaShoppingCart } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Navbar.css';
 import parts from "../assets/logo/White-logo.png";
 
 const Navbar = () => {
+  const navigate = useNavigate(); // Hook to navigate programmatically
+  
+  // Check if the user is authenticated (based on the presence of a token)
+  const isAuthenticated = localStorage.getItem('token');
+
+  // Logout function
+  const logout = () => {
+    // Remove token from localStorage to log out the user
+    localStorage.removeItem('token');
+    
+    // Optionally, you can clear other user-related data here
+    
+    // Redirect the user to the login page or home page
+    navigate('/login'); // Redirect to login page
+  };
+
   return (
     <header className="bg-white shadow-sm">
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
@@ -28,7 +44,7 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             {/* Center the nav items */}
             <ul className="navbar-nav mx-auto">
-              <li className="nav-item">
+              <li className="nav-item me-3"> {/* Added margin-right to add space */}
                 <NavLink 
                   className="nav-link" 
                   exact 
@@ -38,7 +54,7 @@ const Navbar = () => {
                   Home
                 </NavLink>
               </li>
-              <li className="nav-item">
+              <li className="nav-item me-3"> {/* Added margin-right to add space */}
                 <NavLink 
                   className="nav-link" 
                   to="/about" 
@@ -47,7 +63,7 @@ const Navbar = () => {
                   About
                 </NavLink>
               </li>
-              <li className="nav-item">
+              <li className="nav-item me-3"> {/* Added margin-right to add space */}
                 <NavLink 
                   className="nav-link" 
                   to="/contact" 
@@ -56,21 +72,44 @@ const Navbar = () => {
                   Contact
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink 
-                  className="nav-link" 
-                  to="/register" 
-                  activeClassName="active"
-                >
-                  SignUp
-                </NavLink>
-              </li>
+              {/* Conditionally render the SignUp link */}
+              {!isAuthenticated && (
+                <li className="nav-item me-3"> {/* Added margin-right to add space */}
+                  <NavLink 
+                    className="nav-link" 
+                    to="/register" 
+                    activeClassName="active"
+                  >
+                    SignUp
+                  </NavLink>
+                </li>
+              )}
             </ul>
             {/* Icons a little to the left */}
             <div className="d-flex me-3">
-              <NavLink className="nav-link" to="/profile">
-                <FaUser size={20} />
-              </NavLink>
+              {/* Profile dropdown */}
+              {isAuthenticated && (
+                <div className="dropdown">
+                  <button
+                    className="btn btn-link text-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <FaUser size={20} />
+                  </button>
+                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><NavLink className="dropdown-item" to="/profile">Profile</NavLink></li>
+                    <li><NavLink className="dropdown-item" to="/settings">Settings</NavLink></li>
+                    <li>
+                      {/* Logout button */}
+                      <button className="dropdown-item" onClick={logout}>Logout</button>
+                    </li>
+                  </ul>
+                </div>
+              )}
               <NavLink className="nav-link" to="/cart">
                 <FaShoppingCart size={20} />
               </NavLink>
