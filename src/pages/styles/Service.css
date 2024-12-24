@@ -1,0 +1,37 @@
+.services {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 50px 0;
+    text-align: center;
+  }
+  
+  .service {
+    width: 300px;
+  }
+  
+  .icon-circle {
+    background: #ccc;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+  }
+  
+  .service img {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .service h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .service p {
+    font-size: 14px;
+    color: #666;
+  }
