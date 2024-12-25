@@ -6,6 +6,7 @@ import Ads from "../ui/Ads"; // Import the Ads component
 import Featured from "../ui/Featured"; // Import the Featured component
 import Services from "../ui/Service";
 import ProductCard from "../ui/ProductCard";
+import ProductContainer from "../ui/ProductContainer";
 
 const Homepage = () => {
   return (
@@ -14,18 +15,13 @@ const Homepage = () => {
         <Slider />
       </section>
 
-      <section className="homepage-content">
+      
         <Category />
-      </section>
-
-      <section className="homepage-ads">
+        <ProductContainer/>
         <Ads /> {/* Displaying Ads component */}
-      </section>
-
       <section className="homepage-featured">
         <Featured /> {/* Displaying Featured component */}
       </section>
-      <ProductCard />
       <section className="service-featured">
         <Services /> {/* Displaying Featured component */}
       </section>
