@@ -1,0 +1,123 @@
+/* Container with margin and padding */
+.container {
+    margin: 40px auto; 
+    padding: 20px;
+    max-width: 1200px;
+}
+
+/* Header styling */
+h2 {
+    margin-bottom: 20px;
+    margin-top: 10px; 
+    font-size: 24px;
+}
+
+/* Styling for the danger text (Product name in red) */
+.text-danger {
+    color: #dc3545;
+}
+
+/* Flexbox for form and image section */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+/* Gap between elements inside flex container */
+.gap-3 {
+    gap: 1rem;
+}
+
+/* Styling for the form width */
+.w-50 {
+    width: 50%;
+}
+
+/* Styling for form controls and inputs */
+.form-control {
+    margin-bottom: 10px;
+}
+
+/* Styling for textarea */
+textarea.form-control {
+    height: 100px; /* Adjust height for better textarea view */
+}
+
+/* Label font weight */
+label {
+    font-weight: bold;
+}
+
+/* Make image responsive */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Ensuring the image is contained and doesn't distort */
+.object-fit-cover {
+    object-fit: cover;
+}
+
+/* Rounded corners for images */
+.rounded-4 {
+    border-radius: 0.5rem;
+}
+
+/* Spacing for elements with mt-2 and mt-3 */
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
+
+/* Button styling */
+.btn {
+    font-family: 'Times New Roman', serif;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Image section styling */
+.image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.image-section h6 {
+    margin-bottom: 10px;
+}
+
+/* Ensure the image section and form adjust on small screens */
+@media (max-width: 768px) {
+    .d-flex {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .w-50 {
+        width: 100%;  /* Full width for form on smaller screens */
+    }
+
+    .image-section {
+        margin-left: 0; /* Remove margin-left */
+        margin-top: 20px; /* Add top margin */
+    }
+
+    /* Adjust button width on smaller screens */
+    .btn {
+        width: 100%;
+    }
+}
