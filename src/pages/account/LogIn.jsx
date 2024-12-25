@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { loginUserApi } from '../../api/Api'; // Import your API utility
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './LogIn.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { toast } from 'react-toastify'; // Import toast from react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import the default styles for toastify
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,8 +13,9 @@ const Login = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [setFormSubmitted] = useState(false);
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (e) => {
     setFormData({
@@ -44,15 +48,18 @@ const Login = () => {
 
         if (response.data.success) {
           setFormSubmitted(true);
-          setErrorMessage('');
-          alert('Login successful');
-          // Store token and redirect to the dashboard or desired page
+          toast.success('Login successful!'); // Use React Toastify for success message
+          // Store token and user data in local storage
           localStorage.setItem('token', response.data.token);
-          window.location.href = '/'; 
+          const convertedData = JSON.stringify(response.data.userData); // Fixed typo (was 'res')
+          localStorage.setItem('user', convertedData);
+
+          // Redirect to home page after successful login
+          navigate('/'); 
         }
       } catch (error) {
         const errorMsg = error.response?.data?.message || 'Login failed! Please try again.';
-        setErrorMessage(errorMsg);
+        toast.error(errorMsg); // Use React Toastify for error message
         setFormSubmitted(false);
       }
     }
@@ -72,7 +79,6 @@ const Login = () => {
           <div className="col-md-6">
             <div className="off-white-container">
               <h3 className="text-center mb-4">Login</h3>
-              {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">Email</label>
