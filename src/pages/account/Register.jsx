@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { registerUserApi } from '../../api/Api'; // Import your API utility
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Register.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { toast } from 'react-toastify'; // Import toast from react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import the default styles for toastify
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,8 +15,8 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (e) => {
     setFormData({
@@ -51,19 +54,20 @@ const Register = () => {
         const response = await registerUserApi(formData);
 
         if (response.data.success) {
-          setSuccessMessage('User registered successfully!');
-          setErrorMessage('');
+          toast.success('User registered successfully!'); // Use React Toastify for success message
           setFormData({
             name: '',
             email: '',
             password: '',
             confirmPassword: '',
           });
+
+          // Navigate to the home page after successful registration
+          navigate('/login'); // Redirect to the home page
         }
       } catch (error) {
         const errorMsg = error.response?.data?.message || 'Something went wrong!';
-        setErrorMessage(errorMsg);
-        setSuccessMessage('');
+        toast.error(errorMsg); // Use React Toastify for error message
       }
     }
   };
@@ -82,8 +86,6 @@ const Register = () => {
           <div className="col-md-6">
             <div className="off-white-container">
               <h3 className="text-center mb-4">Create an account</h3>
-              {successMessage && <div className="alert alert-success">{successMessage}</div>}
-              {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="name" className="form-label">Name</label>
