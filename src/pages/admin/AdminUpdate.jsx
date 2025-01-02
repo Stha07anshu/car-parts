@@ -13,6 +13,7 @@ const AdminUpdate = () => {
     const [productCategory, setProductCategory] = useState('');
     const [productDescription, setProductDescription] = useState('');
     const [productRating, setProductRating] = useState('');
+    const [productType, setProductType] = useState(''); // State for Product Type
     const [productNewImage, setProductNewImage] = useState(null);
     const [previewNewImage, setPreviewNewImage] = useState(null);
     const [oldImage, setOldImage] = useState('');
@@ -25,6 +26,7 @@ const AdminUpdate = () => {
             setProductDescription(product.productDescription);
             setProductCategory(product.productCategory);
             setProductRating(product.productRating);
+            setProductType(product.productType); // Set Product Type
             setOldImage(product.productImage);
         }).catch((error) => {
             console.error(error);
@@ -33,7 +35,7 @@ const AdminUpdate = () => {
     }, [id]);
 
     const capitalizeFirstLetter = (str) => {
-        if (!str) return '';  // Handle undefined or null input gracefully
+        if (!str) return ''; // Handle undefined or null input gracefully
         return str.charAt(0).toUpperCase() + str.slice(1);
     };
 
@@ -52,6 +54,7 @@ const AdminUpdate = () => {
         formData.append('productCategory', capitalizeFirstLetter(productCategory));
         formData.append('productDescription', capitalizeFirstLetter(productDescription));
         formData.append('productRating', productRating);
+        formData.append('productType', productType); // Add Product Type to form data
 
         if (productNewImage) {
             formData.append('productImage', productNewImage);
@@ -60,7 +63,7 @@ const AdminUpdate = () => {
         updateProduct(id, formData).then((res) => {
             if (res.status === 200) {
                 toast.success(res.data.message);
-                navigate('/admin/dashboard');  // Navigate to the admin dashboard after successful update
+                navigate('/admin/dashboard'); // Navigate to the admin dashboard after successful update
             } else {
                 toast.error("Failed to update product.");
             }
@@ -113,11 +116,13 @@ const AdminUpdate = () => {
                         required
                     >
                         <option value="" disabled>--Select--</option>
-                        <option value="SUV">SUV</option>
-                        <option value="PickUpTruck">Pick Up Truck</option>
-                        <option value="4wd">4WD</option>
-                        <option value="Hatchback">Hatchback</option>
-                        <option value="Sedan">Sedan</option>
+                        <option value="Wheels">Wheels</option>
+                        <option value="Carbon parts">Carbon parts </option>
+                        <option value="Android player">Android player</option>
+                        <option value="Audio System">Audio System</option>
+                        <option value="Seat Cover">Seat Cover</option>
+                        <option value="Lights ">Lights</option>
+                        <option value="Exhaust">Exhaust</option>
                     </select>
 
                     <label className='mt-2' htmlFor="productDescription">Description</label>
@@ -141,6 +146,19 @@ const AdminUpdate = () => {
                         {[1, 2, 3, 4, 5].map((rating) => (
                             <option key={rating} value={rating}>{rating}</option>
                         ))}
+                    </select>
+
+                    <label className='mt-2' htmlFor="productType">Product Type</label>
+                    <select
+                        value={productType}
+                        onChange={(e) => setProductType(e.target.value)}
+                        className='form-control'
+                        id="productType"
+                        required
+                    >
+                        <option value="" disabled>--Select Type--</option>
+                        <option value="Best Selling">Best Selling</option>
+                        <option value="Normal">Normal</option>
                     </select>
 
                     <label className='mt-2' htmlFor="productImage">Choose Product Image</label>
