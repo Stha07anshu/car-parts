@@ -6,7 +6,7 @@ const AdminRoutes = () => {
   const user = JSON.parse(localStorage.getItem('user'))
   
   //check user and  is admin
-  return user !=null && user.isAdmin? <Outlet/>
+  return user != null && user.isAdmin? <Outlet/>
     :<Navigate to ={'/login'}/>
 
 }

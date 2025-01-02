@@ -7,6 +7,7 @@
     z-index: 1030; /* Ensures navbar is above other content */
     background-color: white; /* Ensure background is white */
     box-shadow: 0 4px 2px -2px gray; /* Optional: Adds shadow for visibility */
+    
   }
   
   /* Adjust padding to avoid overlap with navbar */
@@ -17,7 +18,7 @@
   
   /* Navbar links styling */
   .navbar-nav .nav-link {
-    font-size: 16px; /* Adjust font size */
+    font-size: 20px; /* Increased font size */
     padding: 10px 15px; /* Adjust padding for links */
     color: black; /* Make sure the link color is black */
     text-decoration: none; /* Ensure no underline */
@@ -51,7 +52,7 @@
   }
   
   .navbar .nav-link {
-    font-size: 16px;
+    font-size: 20px;
     padding: 10px 15px;
     color: black;
   }

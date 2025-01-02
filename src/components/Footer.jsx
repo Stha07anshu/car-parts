@@ -23,10 +23,10 @@ const Footer = () => {
             <div className="col-md-4">
               <h5>Account</h5>
               <ul className="list-unstyled">
-                <li><a href="/" className="text-white">My Account</a></li>
+                <li><a href="/profile" className="text-white">My Account</a></li>
                 <li><a href="/login" className="text-white">Login / Register</a></li>
                 <li><a href="/cart" className="text-white">Cart</a></li>
-                <li><a href="/shop" className="text-white">Shop</a></li>
+                <li><a href="/all-products" className="text-white">Shop</a></li>
               </ul>
             </div>
             <div className="col-md-4">

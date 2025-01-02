@@ -1,0 +1,49 @@
+.product-container-2 {
+    padding: 20px;
+    align-items: center;
+  }
+  
+  .white-background-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .section-heading {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .section-heading h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .mb-3 {
+    margin-bottom: 1px; /* Default vertical space between rows */
+  }
+  
+  /* Decrease spacing after the first row */
+  .product-container-2 .row:nth-of-type(1) {
+    margin-bottom: 1px; /* Adjust this value as needed */
+  }
+  
+  .card-product-grid {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 350px; /* Set a fixed height for the card */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-product-grid img {
+    width: 100%;
+    height: 200px; /* Set a fixed height for the image */
+    object-fit: cover;
+  }
+  

@@ -1,170 +1,62 @@
-/* General Styling */
-body {
-  background-color: #eeeeee;
-}
-
-a {
-  text-decoration: none !important;
-}
-
-.card-product-list,
-.card-product-grid {
-  margin-bottom: 0;
-}
-
-/* Card Styling */
-.card {
-  width: 500px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 23px;
-  margin-top: 50px;
-}
-
-/* Hover Effect */
-.card-product-grid:hover {
-  box-shadow: 0 4px 15px rgba(153, 153, 153, 0.3);
-  transition: 0.3s;
-  transform: scale(1.05); /* Increase the size of the card by 5% */
-}
-
-/* Image Styling */
-.card-product-grid .img-wrap {
-  border-radius: 0.2rem 0.2rem 0 0;
-  height: 275px; /* Set a fixed height for the image container */
-  padding: 16px;
-  overflow: hidden; /* Ensures no overflow for the image */
-}
-
-.card-product-grid .img-wrap img {
-  width: 100%; /* Ensures the image occupies the full width */
-  height: 100%; /* Ensures the image occupies the full height */
-  object-fit: cover; /* Ensures the image covers the entire space, cropping if necessary */
-}
-
-/* Info Section */
-.card-product-grid .info-wrap {
-  overflow: hidden;
-  padding: 18px 20px;
-}
-
-/* Product Title */
-[class*='card-product'] a.title {
-  color: #212529;
-  display: block;
-  font-size: 1.1rem; /* Ensure the product name is visible and clear */
-  font-weight: 500; /* Make it bold for visibility */
-}
-
-/* Rating Section */
-.stars-container {
-  display: flex;
-  justify-content: flex-start; /* Align stars to the left */
-  flex-wrap: nowrap; /* Prevent overflow */
-  align-items: center; /* Center align the stars vertically */
-  margin-right: 5px; /* Add space between stars and other content */
-}
-
-.stars-container svg {
-  margin-right: 2px; /* Add spacing between the stars */
-  font-size: 1rem; /* Make stars size consistent */
-  color: #f9a826;
-}
-
-/* Price and Button Styling */
-.card-product-grid .price-wrap {
-  margin-top: 15px;
-  display: flex;
-  align-items: center; /* Align price and stars in the same line */
-  justify-content: flex-start; /* Align the price and stars to the left */
-}
-
-.card-product-grid .btn-primary {
-  width: 100%;
-  background-color: #3167eb;
-  color: white;
-  border-color: #3167eb;
-  padding: 0.45rem 0.85rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 0.2rem;
-  text-align: center;
-}
-
-.card-product-grid .price-wrap .btn-warning {
-  margin-left: 10px;
-}
-
-/* Button hover effect */
-.card-product-grid .btn-primary:hover {
-  background-color: #2545cb;
-  border-color: #2545cb;
-}
-
-/* Card Hover Effect */
-.card-product-grid {
-  transition: transform 0.3s ease-in-out;
-}
-
-/* Ensuring proper layout for small and large screens */
-.card-product-grid .col-md-9, .card-product-grid .col-xs-9 {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.card-product-grid .col-md-3, .card-product-grid .col-xs-3 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 5px;
-  padding-right: 10px;
-}
-
-/* Add padding and margin for cleaner layout */
-.card-product-grid .row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.card-product-grid .col-md-9 {
-  max-width: 70%;
-}
-
-.card-product-grid .col-md-3 {
-  max-width: 30%;
-}
-
-/* Styling for the "Buy now" button */
-.bottom-wrap {
-  padding-top: 0px;
-}
-
-.bottom-wrap .btn {
-  display: inline-block;
-  width: 100%;
-  text-align: center;
-}
-
-/* Prevent overflow */
 .product-card {
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow: hidden; /* Prevent any overflow issues */
+  width: 280px; /* Fixed width */
+  height: 400px; /* Fixed height */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Space between elements */
+  margin: auto;
+  
 }
 
-.card-link-wrapper {
-  display: block; /* Ensure that the link wraps the entire card properly */
-  text-decoration: none; /* Prevent the link from affecting text decorations */
+.product-image {
+  width: 100%;
+  height: 200px; /* Fixed height for the image */
+  object-fit: cover; /* Ensure image scales nicely */
+  border-radius: 8px;
+  margin-bottom: 12px;
 }
 
-.card-link-wrapper .card {
-  display: block;
+h3 {
+  font-size: 14px, bold;
+  margin: 8px 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: start;
+  overflow: hidden; /* Truncate long product names */
+}
+
+p {
+  font-size: 16px;
+  color: #333;
+  text-align: start;
+  margin: 4px 0;
+}
+
+.rating {
+  color: #f9a826;
+  font-size: 18px;
+  margin: 8px 0;
+  text-align: end;
+
+}
+
+.buy-now-button {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.buy-now-button:hover {
+  background-color: #0056b3;
 }

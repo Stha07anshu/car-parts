@@ -34,6 +34,7 @@ const AdminDashboard = () => {
     const [productCategory, setProductCategory] = useState('');
     const [productDescription, setProductDescription] = useState('');
     const [productRating, setProductRating] = useState('');
+    const [productType, setProductType] = useState('');
     const [productImage, setProductImage] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
 
@@ -44,22 +45,30 @@ const AdminDashboard = () => {
     };
 
     const handleDelete = (id) => {
-        const confirmDialog = window.confirm("Are you sure want to delete?");
+        const confirmDialog = window.confirm("Are you sure you want to delete?");
         if (confirmDialog) {
-            deleteProduct(id).then((res) => {
-                if (res.status === 201) {
-                    toast.success(res.data.message);
-                    setProducts(products.filter((product) => product._id !== id)); // Update state
-                }
-            }).catch((error) => {
-                if (error.response.status === 500) {
-                    toast.error(error.response.data.message);
-                } else if (error.response.status === 400) {
-                    toast.error(error.response.data.message);
-                }
-            });
+            deleteProduct(id)
+                .then((res) => {
+                    if (res.status === 201) {
+                        toast.success(res.data.message);
+                        // Refresh the page
+                        window.location.reload();
+                    }
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        if (error.response.status === 500) {
+                            toast.error("Internal server error");
+                        } else if (error.response.status === 400) {
+                            toast.error(error.response.data.message);
+                        }
+                    } else {
+                        toast.error("An error occurred.");
+                    }
+                });
         }
     };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -70,6 +79,7 @@ const AdminDashboard = () => {
         formData.append('productCategory', capitalizeFirstLetter(productCategory));
         formData.append('productDescription', capitalizeFirstLetter(productDescription));
         formData.append('productRating', productRating);
+        formData.append('productType', productType);
         if (productImage) {
             formData.append('productImage', productImage);
         }
@@ -127,17 +137,30 @@ const AdminDashboard = () => {
                                             <option key={rating} value={rating}>{rating}</option>
                                         ))}
                                     </select>
+                                    <label className="mt-2">Product Type</label>
+                                    <select
+                                        onChange={(e) => setProductType(e.target.value)}
+                                        className="form-control"
+                                    >
+                                        <option value="" disabled selected>
+                                            --Select Product Type--
+                                        </option>
+                                        <option value="Best Selling">Best Selling</option>
+                                        <option value="Normal">Normal</option>
+                                    </select>
 
 
                                     <div className='mt-2'>
                                         <label>Select Category</label>
                                         <select onChange={(e) => setProductCategory(e.target.value)} className='form-control'>
                                             <option value="Select" disabled selected>--Select--</option>
-                                            <option value="SUV">SUV</option>
-                                            <option value="PickUpTruck">Pick Up Truck</option>
-                                            <option value="4wd">4WD</option>
-                                            <option value="Hatchback">HatchBack</option>
-                                            <option value="Sedan">Sedan</option>
+                                            <option value="Wheels">Wheels</option>
+                                            <option value="Carbon parts">Carbon parts </option>
+                                            <option value="Android player">Android player</option>
+                                            <option value="Audio System">Audio System</option>
+                                            <option value="Seat Cover">Seat Cover</option>
+                                            <option value="Lights ">Lights</option>
+                                            <option value="Exhaust">Exhaust</option>
                                         </select>
                                     </div>
 
@@ -171,6 +194,7 @@ const AdminDashboard = () => {
                             <th>Category</th>
                             <th>Description</th>
                             <th>Rating</th>
+                            <th>Type</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -185,6 +209,8 @@ const AdminDashboard = () => {
                                 <td>{capitalizeFirstLetter(singleProduct.productCategory || '')}</td>
                                 <td>{capitalizeFirstLetter(singleProduct.productDescription || '')}</td>
                                 <td>{singleProduct.productRating}</td>
+                                <td>{capitalizeFirstLetter(singleProduct.productType || '')}</td>
+
                                 <td>
                                     <div className='btn-group' role='group'>
                                         <Link to={`/admin/update/${singleProduct._id}`} className='btn btn-success'>Edit</Link>

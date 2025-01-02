@@ -4,15 +4,15 @@
     align-items: flex-start;
     margin-top: 20px;
     padding: 10px;
-    justify-content: flex-end; /* This will push the content to the right */
+    justify-content: flex-end; /* Push the content to the right */
 }
 
 /* Categories Section */
 .categories {
-    flex: none; /* Prevents resizing */
+    flex: none; /* Prevent resizing */
     margin-right: 10px;
-    padding-left: 20px; /* Add spacing to the left of the text */
-    padding-right: 20px; /* Add spacing to the right of the text */
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .categories ul {
@@ -36,8 +36,8 @@
     width: 2px;
     height: 100%; /* Matches the height of the categories */
     background-color: #000;
-    margin-left: 15px; /* Spacing before the line */
-    margin-right: 15px; /* Spacing after the line */
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 /* Slider Container */
@@ -46,12 +46,12 @@
     color: #fff;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Align items on the left and right */
+    justify-content: space-between;
     padding: 10px;
     border-radius: 20px;
-    min-height: 250px; /* Adjust this value to increase the height */
-    min-width: 1000px; /* Adjust this value if needed */
-    margin-left: auto; /* Aligns the container to the right */
+    min-height: 250px;
+    min-width: 1000px;
+    margin-left: auto;
     position: relative;
 }
 
@@ -59,17 +59,20 @@
 .search-bar {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Align to the left */
-    margin-left: 150px; /* Add some space from the left edge */
+    justify-content: flex-start;
+    margin-left: 150px;
+    background-color: black;
 }
-
 .search-bar input {
-    width: 300px; /* Adjusted width to align with the new layout */
+    width: 300px;
     padding: 5px;
     margin-right: 5px;
-    border: none;
-    border-radius: 4px;
+    border: 1px solid #000; /* Solid black border */
+    border-radius: 4px; /* Rounded corners */
+    outline: none; /* Removes the focus outline */
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
 }
+
 
 .search-bar button {
     background-color: #3498db;
@@ -78,18 +81,54 @@
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
+    width: 50px;
 }
 
 .search-bar button:hover {
     background-color: #2980b9;
 }
+/* Suggestions List */
+.suggestions-list {
+    position: absolute;
+    top: 100%; /* Aligns directly below the input field */
+    left: 0;
+    width: 100%; /* Matches input width */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0;
+    
+  }
+  
+  .suggestions-list li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    color: black; /* Set font color to black */
+
+  }
+  
+  .suggestions-list li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .search-bar {
+    position: relative;
+  }
+  
 
 /* Slider Image Section */
 .slider-image {
     position: absolute;
-    right: 10px; /* Align the image to the right */
-    top: 50%; /* Position image vertically centered */
-    transform: translateY(-50%); /* Center image vertically */
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .slider-image img {
@@ -97,4 +136,26 @@
     height: 250px;
     border-radius: 4px;
     margin-right: 30px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .slider-container {
+        flex-direction: column;
+        align-items: flex-start;
+        min-width: unset;
+        padding: 20px;
+    }
+
+    .search-bar {
+        margin-left: 0;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .slider-image img {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+    }
 }

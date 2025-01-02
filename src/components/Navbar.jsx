@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FaUser, FaShoppingCart } from 'react-icons/fa';
+import { FaUser, FaShoppingCart, FaHeart } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Navbar.css';
 import parts from "../assets/logo/White-logo.png";
@@ -27,7 +27,7 @@ const Navbar = () => {
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container-fluid">
           {/* Move logo a little to the right */}
-          <a className="navbar-brand ms-3" href="/">
+          <a className="navbar-brand ms-5" href="/">
             <img src={parts} alt="Your Logo" width="150" />
           </a>
           <button
@@ -44,7 +44,7 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             {/* Center the nav items */}
             <ul className="navbar-nav mx-auto">
-              <li className="nav-item me-3"> {/* Added margin-right to add space */}
+              <li className="nav-item me-5"> {/* Added margin-right to add space */}
                 <NavLink 
                   className="nav-link" 
                   exact 
@@ -54,7 +54,7 @@ const Navbar = () => {
                   Home
                 </NavLink>
               </li>
-              <li className="nav-item me-3"> {/* Added margin-right to add space */}
+              <li className="nav-item me-5"> {/* Added margin-right to add space */}
                 <NavLink 
                   className="nav-link" 
                   to="/about" 
@@ -63,7 +63,16 @@ const Navbar = () => {
                   About
                 </NavLink>
               </li>
-              <li className="nav-item me-3"> {/* Added margin-right to add space */}
+              <li className="nav-item me-5"> {/* Added margin-right to add space */}
+                <NavLink 
+                  className="nav-link" 
+                  to="/all-products" 
+                  activeClassName="active"
+                >
+                  Products
+                </NavLink>
+              </li>
+              <li className="nav-item me-5"> {/* Added margin-right to add space */}
                 <NavLink 
                   className="nav-link" 
                   to="/contact" 
@@ -74,7 +83,7 @@ const Navbar = () => {
               </li>
               {/* Conditionally render the SignUp link */}
               {!isAuthenticated && (
-                <li className="nav-item me-3"> {/* Added margin-right to add space */}
+                <li className="nav-item me-5"> {/* Added margin-right to add space */}
                   <NavLink 
                     className="nav-link" 
                     to="/register" 
@@ -86,7 +95,7 @@ const Navbar = () => {
               )}
             </ul>
             {/* Icons a little to the left */}
-            <div className="d-flex me-3">
+            <div className="d-flex me-5">
               {/* Profile dropdown */}
               {isAuthenticated && (
                 <div className="dropdown">
@@ -98,11 +107,11 @@ const Navbar = () => {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <FaUser size={20} />
+                    <FaUser size={25} />
                   </button>
                   <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li><NavLink className="dropdown-item" to="/profile">Profile</NavLink></li>
-                    <li><NavLink className="dropdown-item" to="/settings">Settings</NavLink></li>
+                    <li><NavLink className="dropdown-item" to="/my-order">My Order</NavLink></li>
                     <li>
                       {/* Logout button */}
                       <button className="dropdown-item" onClick={logout}>Logout</button>
@@ -111,7 +120,7 @@ const Navbar = () => {
                 </div>
               )}
               <NavLink className="nav-link" to="/cart">
-                <FaShoppingCart size={20} />
+                <FaShoppingCart size={25} />
               </NavLink>
             </div>
           </div>

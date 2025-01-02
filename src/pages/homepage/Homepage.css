@@ -50,37 +50,57 @@ body {
   margin-top: 80px;
 }
 
-/* Content section styles */
-.homepage-content {
-  text-align: center;
-  padding: 40px;
-  background-color: #fff;
-  border-top: 2px solid #3498db;
-}
 
-.homepage-content h2 {
-  font-size: 28px;
+/* Category Section */
+.homepage-category {
+  background-color: #f9f9f9; /* Light background for separation */
   margin-bottom: 20px;
 }
 
-.homepage-content p {
-  font-size: 18px;
-  color: #555;
-}
-
-.homepage-ads {
-  margin-top: 40px;
-  padding: 20px;
-  background-color: #f4f4f4;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.homepage-container {
-  padding: 20px;
-}
-.homepage-featured {
-  margin-top: 40px;
-  padding: 20px;
+/* Products Section 1 */
+.homepage-products {
   background-color: #ffffff;
+  margin-bottom: 10px;
+  align-items: center;
+  
+}
+
+/* Ads Section */
+.homepage-ads {
+  background-color: #ffffff; /* Different background to distinguish ads */
+  margin-bottom: 10px;
+  padding: 30px 0; /* Extra padding for emphasis */
+}
+
+/* Products Section 2 */
+.homepage-products-2 {
+  background-color: #ffffff;
+  margin-bottom: 20px;
+}
+
+/* Featured Section */
+.homepage-featured {
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+}
+
+/* Services Section */
+.homepage-services {
+  background-color: #ffffff;
+  padding: 30px 0; /* Extra padding for a spacious look */
+}
+
+/* Section Headings */
+section h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  section {
+    padding: 10px 0;
+  }
 }

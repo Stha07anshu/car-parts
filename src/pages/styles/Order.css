@@ -1,0 +1,66 @@
+.order-success-container {
+    text-align: center;
+    padding: 20px;
+    margin-top: 75px;
+    margin-bottom: 80px;
+  }
+  
+  .success-message {
+    background-color: #eaffea;
+    border: 1px solid #b2d8b2;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
+  
+  .success-message h1 {
+    color: #2d7a2d;
+    font-size: 2rem;
+  }
+  
+  .success-message p {
+    font-size: 1.2rem;
+  }
+  
+  .order-summary {
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+  }
+  
+  .order-summary h2 {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+  }
+  
+  .order-summary p,
+  .order-summary ul {
+    font-size: 1rem;
+    margin: 10px 0;
+  }
+  
+  .navigation-buttons {
+    margin-top: 20px;
+  }
+  
+  .navigation-buttons button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    transition: background-color 0.3s;
+  }
+  
+  .navigation-buttons button:hover {
+    background-color: #0056b3;
+  }
+  

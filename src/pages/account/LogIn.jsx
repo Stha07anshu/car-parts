@@ -13,7 +13,7 @@ const Login = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [setFormSubmitted] = useState(false);
+  const [,setFormSubmitted] = useState(false);
 
   const navigate = useNavigate(); // Initialize useNavigate
 
