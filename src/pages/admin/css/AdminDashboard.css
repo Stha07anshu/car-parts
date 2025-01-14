@@ -143,3 +143,28 @@
 .btn-secondary:hover {
     background-color: #5a6268;
 }
+/* Custom Blue Button for View Orders */
+.btn-blue {
+    background-color: #007bff; /* Custom blue */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-blue:hover {
+    background-color: #0056b3; /* Darker blue for hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.btn-blue:focus {
+    outline: none; /* Remove outline on focus */
+}
+
+/* Optional: Adds margin to separate it from other elements */
+.ms-1 {
+    margin-left: 10px; /* Adds a little space between buttons */
+}
