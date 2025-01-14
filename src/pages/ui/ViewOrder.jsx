@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../styles/ViewOrder.css"; // Create a CSS file for styling
-import { getAllOrders } from "../../api/Api"; // Adjust the path for your API calls
+import { getAllOrders, deleteOrder } from "../../api/Api"; // Include the deleteOrder API call
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css"; // Import the necessary CSS for toast
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -16,7 +18,6 @@ const MyOrders = () => {
         const response = await getAllOrders();
         if (response.data.success) {
           setOrders(response.data.data);
-          console.log(response.data)
         } else {
           setError(response.data.message);
         }
@@ -34,6 +35,26 @@ const MyOrders = () => {
     navigate(`/order/${orderId}`);
   };
 
+  const handleDeleteOrder = async (orderId) => {
+    try {
+      const response = await deleteOrder(orderId);
+      if (response.data.success) {
+        setOrders((prevOrders) =>
+          prevOrders.filter((order) => order._id !== orderId)
+        );
+        toast.success("Order deleted successfully!"); // Display success toast
+        setTimeout(() => {
+          window.location.reload(); // Refresh the page after deletion
+        }, 2000); // Wait for toast to appear before reloading
+      } else {
+        toast.error(response.data.message || "Failed to delete order.");
+      }
+    } catch (err) {
+      toast.error(err.message || "An error occurred while deleting the order.");
+    }
+  };
+  
+
   if (loading) return <p className="loading-text">Loading your orders...</p>;
   if (error) return <p className="error-text">Error: {error}</p>;
 
@@ -50,9 +71,20 @@ const MyOrders = () => {
               <p><strong>Total Amount:</strong> Rs {order.totalAmount}</p>
               <p><strong>Payment Method:</strong> {order.paymentMethod}</p>
               <p><strong>Status:</strong> {order.status}</p>
-              <button onClick={() => handleViewOrderDetails(order._id)}>
-                View Details
-              </button>
+              <div className="order-buttons-container">
+                <button
+                  className="view-details-btn"
+                  onClick={() => handleViewOrderDetails(order._id)}
+                >
+                  View Details
+                </button>
+                <button
+                  className="delete-order-btn"
+                  onClick={() => handleDeleteOrder(order._id)}
+                >
+                  Delete Order
+                </button>
+              </div>
             </div>
           ))}
         </div>
