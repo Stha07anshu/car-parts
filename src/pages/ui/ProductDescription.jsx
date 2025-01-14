@@ -10,7 +10,7 @@ const ProductDescription = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [selectedPayment, setSelectedPayment] = useState("cashOnDelivery"); // Default to "Cash on Delivery"
+  const [selectedPayment, setSelectedPayment] = useState("cashOnDelivery");
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
 
@@ -41,15 +41,18 @@ const ProductDescription = () => {
   }, [id]);
 
   const handleQuantityChange = (action) => {
-    if (action === "increase") {
-      setQuantity((prevQuantity) => prevQuantity + 1);
-    } else if (action === "decrease" && quantity > 1) {
-      setQuantity((prevQuantity) => prevQuantity - 1);
-    }
+    setQuantity((prevQuantity) => {
+      if (action === "increase" && prevQuantity < 5) {
+        return prevQuantity + 1;
+      } else if (action === "decrease" && prevQuantity > 1) {
+        return prevQuantity - 1;
+      }
+      return prevQuantity;
+    });
   };
 
   const handleQuantityInputChange = (e) => {
-    const newQuantity = Math.max(1, Number(e.target.value));
+    const newQuantity = Math.min(5, Math.max(1, Number(e.target.value)));
     setQuantity(newQuantity);
   };
 
@@ -63,6 +66,62 @@ const ProductDescription = () => {
     setSelectedPayment(event.target.value);
   };
 
+  const handlePayment = async (payment_method) => {
+    const url = "http://localhost:5000/api/esewa/create"; // Endpoint to create order
+  
+    const data = {
+      id:'anshu',
+      amount: totalPrice, // Amount to pay (total price from the cart)
+      products: [{ product: "test", amount: totalPrice, quantity: quantity }], // Example product data
+      payment_method, // Payment method ("esewa" or "cashOnDelivery")
+    };
+  
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+  
+      // Check if the request was successful (status code 2xx)
+      if (response.ok) {
+        const responseData = await response.json();
+        esewaCall(responseData.formData); // Call the esewa payment gateway
+      } else {
+        console.error("Failed to fetch:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
+  };
+  
+  // Function to initiate payment using Esewa's API
+  const esewaCall = (formData) => {
+    console.log("Form Data to be sent to Esewa:", formData);
+  
+    const path = "https://rc-epay.esewa.com.np/api/epay/main/v2/form"; // Esewa payment URL
+  
+    const form = document.createElement("form");
+    form.setAttribute("method", "POST");
+    form.setAttribute("action", path);
+  
+    // Add form data as hidden inputs to submit to Esewa
+    for (const key in formData) {
+      const hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", key);
+      hiddenField.setAttribute("value", formData[key]);
+      form.appendChild(hiddenField);
+    }
+  
+    // Append the form to the body and submit it
+    document.body.appendChild(form);
+    form.submit();
+  };
+  
+  
   const handleOrderCreation = async () => {
     const data = {
       products: [{ productId: product._id, quantity: quantity }],
@@ -72,7 +131,6 @@ const ProductDescription = () => {
 
     try {
       const response = await createOrder(data);
-
       if (response.data.success) {
         alert("Order created successfully!");
         navigate("/order/confirmation");
@@ -169,8 +227,8 @@ const ProductDescription = () => {
           </div>
 
           <div className="action-buttons">
-            <button className="buy-now" onClick={handleOrderCreation}>
-              Buy Now
+            <button className="buy-now" onClick={selectedPayment === "esewa" ? () => handlePayment("esewa") : handleOrderCreation}>
+              {selectedPayment === "esewa" ? "Buy Now with Esewa" : "Buy Now"}
             </button>
             <button className="add-to-cart" onClick={handleAddToCart}>
               Add to Cart
