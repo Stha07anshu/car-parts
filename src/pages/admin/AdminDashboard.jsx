@@ -111,6 +111,14 @@ const AdminDashboard = () => {
                     <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Add Product
                     </button>
+                    <Link to="/admin/order" className="btn btn-blue ms-1">
+            View Orders
+            </Link>
+            <Link to="/admin/contact" className="btn btn-blue ms-1">
+            View Contacts
+        </Link>
+
+
                 </div>
 
                 {/* Modal for adding a new product */}
