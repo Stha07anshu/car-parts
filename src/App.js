@@ -22,6 +22,8 @@ import OrderDetails from "./pages/ui/OrderDetails";
 import AllProductsPage from "./pages/ui/AllProducts";
 import Success from "./pages/payments/Sucess";
 import Failure from "./pages/payments/Failure";
+import AdminOrders from "./pages/admin/AdminOrder";
+import AdminViewContacts from "./pages/admin/AdminViewContact";
 
 function App() {
   return (
@@ -54,7 +56,8 @@ function App() {
             
             <Route path='/admin/dashboard' element={<AdminDashboard />} />
             <Route path='/admin/update/:id' element={<AdminUpdate />} />
-            
+            <Route path='/admin/order' element={<AdminOrders />} />
+            <Route path='/admin/contact' element={<AdminViewContacts />} />
           </Route>
         </Routes>
 
