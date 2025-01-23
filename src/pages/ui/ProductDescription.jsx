@@ -88,6 +88,7 @@ const ProductDescription = () => {
       // Check if the request was successful (status code 2xx)
       if (response.ok) {
         const responseData = await response.json();
+        console.log(responseData);
         esewaCall(responseData.formData); // Call the esewa payment gateway
       } else {
         console.error("Failed to fetch:", response.status, response.statusText);
