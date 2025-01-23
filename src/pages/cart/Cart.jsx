@@ -7,18 +7,26 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
-  const [selectedPayment, setSelectedPayment] = useState('cashOnDelivery'); // Default to "Cash on Delivery"
+  const [selectedPayment, setSelectedPayment] = useState("cashOnDelivery"); // Default to "Cash on Delivery"
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCartItems = async () => {
+      setLoading(true);
       try {
         const response = await getAllCarts();
         if (response.data.success) {
           setCartItems(response.data.data.items);
+        } else {
+          setError("Failed to fetch cart items.");
         }
       } catch (err) {
+        setError("Error fetching cart items.");
         console.error("Error fetching cart items:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -32,7 +40,7 @@ const Cart = () => {
 
       const updatedData = {
         quantity: updatedQuantity,
-        productId: id
+        productId: id,
       };
 
       const response = await updateCartItem(id, updatedData);
@@ -83,23 +91,71 @@ const Cart = () => {
     setSelectedPayment(e.target.value);
   };
 
-  const handleCheckout = async () => {
-    if (!selectedPayment) {
-      alert("Please provide a payment method.");
-      return;
-    }
-
-    const orderData = {
-      products: cartItems.map(item => ({
-        productId: item.productId,
-        quantity: item.quantity
+  const handlePayment = async (payment_method) => {
+    const totalPrice = calculateTotal();
+    const data = {
+      id: "anshu",
+      amount: totalPrice,
+      products: cartItems.map((item) => ({
+        product: item.productName,
+        amount: item.productPrice,
+        quantity: item.quantity,
       })),
-      totalAmount: calculateTotal(),
-      paymentMethod: selectedPayment
+      payment_method,
     };
 
     try {
-      const response = await createOrder(orderData);
+      const response = await fetch("http://localhost:5000/api/esewa/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        esewaCall(responseData.formData);
+      } else {
+        console.error("Failed to initiate payment:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error initiating payment:", error);
+    }
+  };
+
+  const esewaCall = (formData) => {
+    const path = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
+
+    const form = document.createElement("form");
+    form.setAttribute("method", "POST");
+    form.setAttribute("action", path);
+
+    for (const key in formData) {
+      const hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", key);
+      hiddenField.setAttribute("value", formData[key]);
+      form.appendChild(hiddenField);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+  };
+
+  const handleOrderCreation = async () => {
+    const totalPrice = calculateTotal();
+    const data = {
+      products: cartItems.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+      totalAmount: totalPrice,
+      paymentMethod: selectedPayment,
+    };
+
+    try {
+      const response = await createOrder(data);
       if (response.data.success) {
         alert("Order created successfully!");
         navigate("/order/confirmation");
@@ -107,10 +163,13 @@ const Cart = () => {
         alert("Failed to create the order. Please try again.");
       }
     } catch (error) {
-      console.error("Error creating order:", error);
+      console.error(error);
       alert("Error occurred while creating the order.");
     }
   };
+
+  if (loading) return <p className="loading-text">Loading...</p>;
+  if (error) return <p className="error-text">Error: {error}</p>;
 
   return (
     <div className="cart-page">
@@ -139,16 +198,11 @@ const Cart = () => {
                   type="number"
                   value={item.quantity}
                   min="1"
-                  onChange={(e) =>
-                    handleQuantityChange(item._id, e.target.value)
-                  }
+                  onChange={(e) => handleQuantityChange(item._id, e.target.value)}
                 />
               </div>
               <div className="product-action">
-                <button
-                  className="delete-button"
-                  onClick={() => handleDeleteItem(item._id)}
-                >
+                <button className="delete-button" onClick={() => handleDeleteItem(item._id)}>
                   Delete
                 </button>
               </div>
@@ -192,36 +246,42 @@ const Cart = () => {
               <span>Total:</span>
               <span>Rs {calculateTotal().toLocaleString()}</span>
             </div>
-            <h3>Select Payment Option</h3>
-
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="paymentOption"
-                value="esewa"
-                checked={selectedPayment === "esewa"}
-                onChange={handlePaymentChange}
-              />
-              <label className="form-check-label">Esewa</label>
+            <div className="payment-option">
+              <h3>Select Payment Option</h3>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="paymentOption"
+                  value="esewa"
+                  checked={selectedPayment === "esewa"}
+                  onChange={handlePaymentChange}
+                />
+                <label className="form-check-label">Esewa</label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="paymentOption"
+                  value="cashOnDelivery"
+                  checked={selectedPayment === "cashOnDelivery"}
+                  onChange={handlePaymentChange}
+                />
+                <label className="form-check-label">Cash on Delivery</label>
+              </div>
             </div>
-
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="paymentOption"
-                value="cashOnDelivery"
-                checked={selectedPayment === "cashOnDelivery"}
-                onChange={handlePaymentChange}
-              />
-              <label className="form-check-label">Cash on Delivery</label>
+            <div className="action-buttons">
+              <button
+                className="buy-now"
+                onClick={
+                  selectedPayment === "esewa" ? () => handlePayment("esewa") : handleOrderCreation
+                }
+              >
+                {selectedPayment === "esewa" ? "Buy Now with Esewa" : "Buy Now"}
+              </button>
             </div>
           </div>
-
-          <button className="checkout-button" onClick={handleCheckout}>
-            Proceed to Checkout
-          </button>
         </div>
       </div>
     </div>
