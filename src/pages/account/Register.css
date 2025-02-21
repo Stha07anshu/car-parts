@@ -46,4 +46,42 @@
   .text-center a:hover {
     text-decoration: underline; /* Add hover effect on the link */
   }
+  .password-strength {
+    margin-top: 5px;
+    font-weight: bold;
+  }
+  
+  .password-strength.strong {
+    color: green;
+  }
+  
+  .password-strength.medium {
+    color: orange;
+  }
+  
+  .password-strength.weak {
+    color: red;
+  }
+  
+  .progress {
+    height: 10px;
+    margin-top: 5px;
+  }
+  
+  .requirements {
+    margin-top: 10px;
+  }
+  
+  .requirements ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .requirements li {
+    color: red;
+  }
+  
+  .requirements li.fulfilled {
+    color: green;
+  }
   

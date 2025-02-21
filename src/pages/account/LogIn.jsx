@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { loginUserApi } from '../../api/Api'; // Import your API utility
+import { loginUserApi } from '../../api/Api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './LogIn.css';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { toast } from 'react-toastify'; // Import toast from react-toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import the default styles for toastify
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -13,9 +14,10 @@ const Login = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [,setFormSubmitted] = useState(false);
+  const [, setFormSubmitted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -27,7 +29,6 @@ const Login = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    // Check if all fields are filled
     Object.keys(formData).forEach((key) => {
       if (!formData[key]) {
         newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
@@ -43,25 +44,24 @@ const Login = () => {
 
     if (validateForm()) {
       try {
-        // Call the login API
         const response = await loginUserApi(formData);
 
         if (response.data.success) {
           setFormSubmitted(true);
-          toast.success('Login successful!'); // Use React Toastify for success message
-          // Store token and user data in local storage
+          toast.success('Login successful!', { position: 'top-right' });
           localStorage.setItem('token', response.data.token);
-          const convertedData = JSON.stringify(response.data.userData); // Fixed typo (was 'res')
-          localStorage.setItem('user', convertedData);
-
-          // Redirect to home page after successful login
-          navigate('/'); 
+          localStorage.setItem('user', JSON.stringify(response.data.userData));
+          navigate('/');
+        } else {
+          toast.warning('Incorrect email or password!', { position: 'top-right' });
         }
       } catch (error) {
         const errorMsg = error.response?.data?.message || 'Login failed! Please try again.';
-        toast.error(errorMsg); // Use React Toastify for error message
+        toast.error(errorMsg, { position: 'top-right' });
         setFormSubmitted(false);
       }
+    } else {
+      toast.info('Please fill in all required fields.', { position: 'top-right' });
     }
   };
 
@@ -92,16 +92,21 @@ const Login = () => {
                   />
                   {errors.email && <div className="text-danger">{errors.email}</div>}
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 position-relative">
                   <label htmlFor="password" className="form-label">Password</label>
-                  <input
-                    type="password"
-                    id="password"
-                    className="form-control"
-                    placeholder="Enter your password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
+                  <div className="input-group">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      id="password"
+                      className="form-control"
+                      placeholder="Enter your password"
+                      value={formData.password}
+                      onChange={handleChange}
+                    />
+                    <span className="input-group-text" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </span>
+                  </div>
                   {errors.password && <div className="text-danger">{errors.password}</div>}
                 </div>
                 <button type="submit" className="btn btn-primary w-100">Login</button>

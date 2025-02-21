@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import the CSS for toast notifications
 import "./Profile.css";
 
 const Profile = () => {
@@ -11,8 +13,7 @@ const Profile = () => {
     address: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [changePassword, setChangePassword] = useState(false);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -20,7 +21,7 @@ const Profile = () => {
       setFormData({
         fullName: userData.name,
         email: userData.email,
-        address: userData.address || "", // Initialize address from localStorage
+        address: userData.address || "",
       });
     }
   }, []);
@@ -30,111 +31,186 @@ const Profile = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleCheckboxChange = () => {
+    setChangePassword(!changePassword);
+    if (!changePassword) {
+      setFormData({
+        ...formData,
+        currentPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+      });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-    setSuccess(null);
 
-    const { fullName, email, currentPassword, newPassword, confirmNewPassword, address } = formData;
+    const {
+      fullName,
+      email,
+      currentPassword,
+      newPassword,
+      confirmNewPassword,
+      address,
+    } = formData;
 
     // Validate that new password and confirm password match
-    if (newPassword !== confirmNewPassword) {
+    if (changePassword && newPassword !== confirmNewPassword) {
       setLoading(false);
-      setError("Passwords do not match!");
+      toast.error("Passwords do not match!");
       return;
     }
 
-    // Check if old password is correct ('123456')
-    if (currentPassword !== "123456") {
+    try {
+      // Prepare the data to send to the server
+      const data = {
+        email,
+        oldPassword: changePassword ? currentPassword : undefined,
+        newPassword: changePassword ? newPassword : undefined,
+        newName: fullName,
+        address,
+      };
+
+      // Make the API call to update the user
+      const response = await fetch(
+        "http://localhost:5000/api/user/update/" +
+          JSON.parse(localStorage.getItem("user"))._id,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(data),
+        },
+      );
+
+      const result = await response.json();
+      console.log("THE RESPONSE IS ", result);
+
+      if (result.success) {
+        toast.success(result.message);
+        // Update localStorage with the new profile information
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...JSON.parse(localStorage.getItem("user")),
+            name: fullName,
+            email,
+            address,
+          }),
+        );
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      toast.error("An error occurred while updating the profile.");
+    } finally {
       setLoading(false);
-      setError("Incorrect old password!");
-      return;
     }
-
-    // Simulate saving the updated information (localStorage in this case)
-    setLoading(false);
-    setSuccess("Profile updated successfully!");
-
-    // Update the localStorage with the new profile information
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ ...JSON.parse(localStorage.getItem("user")), name: fullName, email, address })
-    );
   };
 
   return (
-    <div className="profile-edit-container">
-      <h2 className="profile-edit-header">Edit Your Profile</h2>
-      <form className="profile-edit-form" onSubmit={handleSubmit}>
-        <div className="form-group">
+    <div className='profile-edit-container'>
+      <ToastContainer /> {/* Add ToastContainer to render the toasts */}
+      <h2 className='profile-edit-header'>Edit Your Profile</h2>
+      <form className='profile-edit-form' onSubmit={handleSubmit}>
+        <div className='form-group'>
           <label>Full Name</label>
           <input
-            type="text"
-            name="fullName"
+            type='text'
+            name='fullName'
             value={formData.fullName}
             onChange={handleChange}
           />
         </div>
 
-        <div className="form-group">
+        <div className='form-group'>
           <label>Email</label>
           <input
-            type="email"
-            name="email"
+            style={{
+              cursor: "not-allowed",
+              backgroundColor: "#f5f5f9",
+            }}
+            type='email'
+            name='email'
             value={formData.email}
-            onChange={handleChange}
+            disabled
           />
         </div>
 
-        <div className="form-group">
+        <div className='form-group'>
           <label>Address</label>
           <input
-            type="text"
-            name="address"
+            type='text'
+            name='address'
             value={formData.address}
             onChange={handleChange}
-            placeholder="Enter your address"
+            placeholder='Enter your address'
           />
         </div>
 
-        <h3 className="password-header">Password Changes</h3>
-        <div className="form-group">
-          <label>Current Password</label>
+        <h3 className='password-header'>Password Changes</h3>
+        <div
+          style={{
+            display: "flex",
+            gap: "16px",
+            alignItems: "center",
+          }}
+        >
+          <label>Change Password</label>
           <input
-            type="password"
-            name="currentPassword"
-            value={formData.currentPassword}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>New Password</label>
-          <input
-            type="password"
-            name="newPassword"
-            value={formData.newPassword}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Confirm New Password</label>
-          <input
-            type="password"
-            name="confirmNewPassword"
-            value={formData.confirmNewPassword}
-            onChange={handleChange}
+            style={{
+              width: "auto",
+              padding: "0",
+              margin: "0",
+            }}
+            type='checkbox'
+            checked={changePassword}
+            onChange={handleCheckboxChange}
           />
         </div>
 
-        {error && <p className="error-message">{error}</p>}
-        {success && <p className="success-message">{success}</p>}
+        {changePassword && (
+          <>
+            <div className='form-group'>
+              <label>Current Password</label>
+              <input
+                type='password'
+                name='currentPassword'
+                value={formData.currentPassword}
+                onChange={handleChange}
+              />
+            </div>
+            <div className='form-group'>
+              <label>New Password</label>
+              <input
+                type='password'
+                name='newPassword'
+                value={formData.newPassword}
+                onChange={handleChange}
+              />
+            </div>
+            <div className='form-group'>
+              <label>Confirm New Password</label>
+              <input
+                type='password'
+                name='confirmNewPassword'
+                value={formData.confirmNewPassword}
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        )}
 
-        <div className="form-buttons">
-          <button type="button" className="cancel-button">
+        <div className='form-buttons'>
+          <button type='button' className='cancel-button'>
             Cancel
           </button>
-          <button type="submit" className="save-button" disabled={loading}>
+          <button type='submit' className='save-button' disabled={loading}>
             {loading ? "Saving..." : "Save Changes"}
           </button>
         </div>

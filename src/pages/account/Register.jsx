@@ -5,6 +5,7 @@ import './Register.css';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { toast } from 'react-toastify'; // Import toast from react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import the default styles for toastify
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons for password visibility
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -15,14 +16,53 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [passwordStrength, setPasswordStrength] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordMatch, setPasswordMatch] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false); // Track if password input is focused
 
   const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (e) => {
+    const { id, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value,
+      [id]: value,
     });
+
+    // Check password strength if the password field is being updated
+    if (id === 'password') {
+      checkPasswordStrength(value);
+    }
+
+    // Validate email format
+    if (id === 'email') {
+      validateEmail(value);
+    }
+
+    // Check if passwords match
+    if (id === 'confirmPassword') {
+      setPasswordMatch(value === formData.password);
+    }
+  };
+
+  const checkPasswordStrength = (password) => {
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const mediumPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
+
+    if (strongPasswordRegex.test(password)) {
+      setPasswordStrength('Strong');
+    } else if (mediumPasswordRegex.test(password)) {
+      setPasswordStrength('Medium');
+    } else {
+      setPasswordStrength('Weak');
+    }
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setEmailValid(emailRegex.test(email));
   };
 
   const validateForm = () => {
@@ -48,7 +88,7 @@ const Register = () => {
     e.preventDefault();
 
     // Validate the form before submitting
-    if (validateForm()) {
+    if (validateForm() && emailValid && passwordMatch) {
       try {
         // Call the register API
         const response = await registerUserApi(formData);
@@ -61,7 +101,9 @@ const Register = () => {
             password: '',
             confirmPassword: '',
           });
-
+          setPasswordStrength(''); // Reset password strength
+          setEmailValid(false); // Reset email validation
+          setPasswordMatch(false); // Reset password match validation
           // Navigate to the home page after successful registration
           navigate('/login'); // Redirect to the home page
         }
@@ -69,6 +111,25 @@ const Register = () => {
         const errorMsg = error.response?.data?.message || 'Something went wrong!';
         toast.error(errorMsg); // Use React Toastify for error message
       }
+    } else {
+      toast.error('Please fix the errors before submitting.'); // Show error toast
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const getPasswordStrengthPercentage = () => {
+    switch (passwordStrength) {
+      case 'Strong':
+        return 100;
+      case 'Medium':
+        return 60;
+      case 'Weak':
+        return 30;
+      default:
+        return 0;
     }
   };
 
@@ -110,30 +171,84 @@ const Register = () => {
                     onChange={handleChange}
                   />
                   {errors.email && <div className="text-danger">{errors.email}</div>}
+                  {!emailValid && formData.email && (
+                    <div className="text-danger">Email is not valid</div>
+                  )}
                 </div>
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">Password</label>
-                  <input
-                    type="password"
-                    id="password"
-                    className="form-control"
-                    placeholder="Enter your password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
+                  <div className="input-group">
+                    <input
+                      type={passwordVisible ? 'text' : 'password'}
+                      id="password"
+                      className="form-control"
+                      placeholder="Enter your password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      onFocus={() => setPasswordFocused(true)} // Set focused state on focus
+                      onBlur={() => setPasswordFocused(false)} // Reset focused state on blur
+                    />
+                    <span className="input-group-text" onClick={togglePasswordVisibility}>
+                      {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                    </span>
+                  </div>
                   {errors.password && <div className="text-danger">{errors.password}</div>}
+                  {passwordFocused && ( // Show suggestions only when focused
+                    <>
+                      <div className={`password-strength ${passwordStrength.toLowerCase()}`}>
+                        {passwordStrength && `Password Strength: ${passwordStrength}`}
+                      </div>
+                      <div className="progress">
+                        <div
+                          className="progress-bar"
+                          role="progressbar"
+                          style={{ width: `${getPasswordStrengthPercentage()}%` }}
+                          aria-valuenow={getPasswordStrengthPercentage()}
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                      </div>
+                      <div className="requirements">
+                        <ul>
+                          <li className={formData.password.match(/[a-z]/) ? 'fulfilled' : ''}>
+                            At least one lowercase letter
+                          </li>
+                          <li className={formData.password.match(/[A-Z]/) ? 'fulfilled' : ''}>
+                            At least one uppercase letter
+                          </li>
+                          <li className={formData.password.match(/\d/) ? 'fulfilled' : ''}>
+                            At least one number
+                          </li>
+                          <li className={formData.password.match(/[@$!%*?&]/) ? 'fulfilled' : ''}>
+                            At least one special character
+                          </li>
+                          <li className={formData.password.length >= 8 ? 'fulfilled' : ''}>
+                            At least 8 characters long
+                          </li>
+                        </ul>
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className="mb-3">
                   <label htmlFor="confirm-password" className="form-label">Re-type Password</label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    className="form-control"
-                    placeholder="Re-type password"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                  />
+                  <div className="input-group">
+                    <input
+                      type={passwordVisible ? 'text' : 'password'}
+                      id="confirmPassword"
+                      className="form-control"
+                      placeholder="Re-type password"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                    />
+                    <span className="input-group-text" onClick={togglePasswordVisibility}>
+                      {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                    </span>
+                  </div>
                   {errors.confirmPassword && <div className="text-danger">{errors.confirmPassword}</div>}
+                  {!passwordMatch && formData.confirmPassword && (
+                    <div className="text-danger">Passwords do not match</div>
+                  )}
                 </div>
                 <button type="submit" className="btn btn-primary w-100">Create Account</button>
               </form>

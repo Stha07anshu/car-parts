@@ -7,6 +7,7 @@ import Featured from "../ui/Featured"; // Import the Featured component
 import Services from "../ui/Service";
 import ProductContainer2 from "../ui/ProductContainer2";
 import Product from "../ui/Product";
+import { FaWhatsapp } from "react-icons/fa"; // Import WhatsApp icon from react-icons
 
 const Homepage = () => {
   return (
@@ -45,6 +46,16 @@ const Homepage = () => {
       <section className="homepage-services">
         <Services />
       </section>
+
+      {/* WhatsApp Floating Button */}
+      <a
+        href="https://wa.me/9861886580"
+        className="whatsapp-float"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FaWhatsapp className="whatsapp-icon" />
+      </a>
     </div>
   );
 };
